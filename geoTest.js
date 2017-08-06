@@ -37,7 +37,7 @@ function initMap() {
 } // end initMap function
 
 
-function geoLocate(userMarker,isNew) {
+function geoLocate(userMarker) {
      // Try HTML5 geolocation.
     var options = {
         enableHighAccuracy: true,
@@ -51,9 +51,6 @@ function geoLocate(userMarker,isNew) {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
                 });
-            // is this an initial load? set userMarker as a new market and place at map center
-            if ( isNew ) {
-                isNew=false;
                 userMarker = new google.maps.Marker({
                     position: map.getCenter(),
                     icon: {
@@ -66,12 +63,6 @@ function geoLocate(userMarker,isNew) {
                     },
                     map: map
                 });
-            }
-            // the user marker already exists; just change its position
-            else {
-                userMarker.setPosition(map.getCenter())
-            }
-
         }, 
             // geolocation error function
             function(error){
