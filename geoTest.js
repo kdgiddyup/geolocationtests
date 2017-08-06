@@ -43,6 +43,9 @@ function geoLocate() {
         maximumAge: 0
     };
     if (navigator.geolocation) {
+        if (userMarker) {
+            userMarker.setMap(null);
+        }
         watchId = navigator.geolocation.watchPosition(function(position) {
             map.setCenter(
                 {
