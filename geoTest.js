@@ -10,12 +10,6 @@ function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 17
     });
-    // establish user's position
-    var userMarker;
-    var isNew = true;
-
-    // start geolocating
-    geoLocate(userMarker,isNew);
 
     // this would become a module for populating the entire map with all the tour stops
     targetMarker = new google.maps.Marker({
@@ -34,11 +28,15 @@ function initMap() {
         map: map
     });
 
+    // start geolocating
+    geoLocate();
+
 } // end initMap function
 
 
-function geoLocate(userMarker) {
-     // Try HTML5 geolocation.
+function geoLocate() {
+
+    // Try HTML5 geolocation.
     var options = {
         enableHighAccuracy: true,
         timeout: 5000,
@@ -51,7 +49,7 @@ function geoLocate(userMarker) {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
                 });
-                userMarker = new google.maps.Marker({
+                var userMarker = new google.maps.Marker({
                     position: map.getCenter(),
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
