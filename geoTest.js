@@ -12,11 +12,10 @@ function initMap() {
     });
     // establish user's position
     var userMarker;
-    var timer;
     var isNew = true;
 
-    // start geolocating cycle
-    trackUser(userMarker, timer, 0, isNew);
+    // start geolocating
+    geoLocate(userMarker,isNew);
 
     // this would become a module for populating the entire map with all the tour stops
     targetMarker = new google.maps.Marker({
@@ -37,21 +36,8 @@ function initMap() {
 
 } // end initMap function
 
-// set interval to continually get user's position; 4000 = 4 seconds
-function trackUser(userMarker, timer, seconds, isNew) {     
-    clearInterval(timer);
-    timer = setTimeout( function(){
-        // is this an initial run? don't unset marker 
-        if( !isNew ) {
-            userMarker.setMap(null);
-            isNew = true;
-        };
-        geoLocate(userMarker,isNew,timer);
-        console.log("new position set")
-    }, seconds*1000);
-}
 
-function geoLocate(userMarker,isNew,timer) {
+function geoLocate(userMarker,isNew) {
      // Try HTML5 geolocation.
     var options = {
         enableHighAccuracy: true,
@@ -59,7 +45,7 @@ function geoLocate(userMarker,isNew,timer) {
         maximumAge: 0
     };
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
+        watchId = navigator.geolocation.watchPosition(function(position) {
             map.setCenter(
                 {
                 lat: position.coords.latitude,
@@ -86,8 +72,6 @@ function geoLocate(userMarker,isNew,timer) {
                 userMarker.setPosition(map.getCenter())
             }
 
-            // set 4-second interval and geolocate again
-            trackUser(userMarker, timer, 4, isNew);
         }, 
             // geolocation error function
             function(error){
@@ -107,4 +91,3 @@ function handleLocationError(browserHasGeolocation, pos) {
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.');
 }
-
