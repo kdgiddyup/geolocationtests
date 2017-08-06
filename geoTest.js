@@ -106,8 +106,21 @@ function handleLocationError(browserHasGeolocation, pos) {
 
 function getDirections(userPos, targetPos) {
     //41.43206,-81.38992
-    var query = `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${userPos}&destinations=${targetPos}&mode=walking&key=AIzaSyA6Rsd_FbqSDftXyU8494oVNVV14q9zLIg`;   
-    $.get(query,function(response){
+    var origin = new google.maps.LatLng(userPos);
+    var target = new google.maps.LatLng(targetPos);
+    var service = new google.maps.DistanceMatrixService();
+
+    service.getDistanceMatrix(
+        {
+            origins: [origin],
+            destinations: [target],
+            travelMode: "WALKING",
+            //unitSystem: "imperial",
+        },
+        callback
+    );
+    
+    function callback(response,status){
         console.log(response);
-    })
+    }
 }
