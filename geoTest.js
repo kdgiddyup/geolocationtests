@@ -14,8 +14,8 @@ function initMap() {
     // this would become a module for populating the entire map with all the tour stops
     targetMarker = new google.maps.Marker({
         position: { 
-            lat: 32.275440, 
-            lng: -80.925087
+            lat: 32.058953, 
+            lng: -81.099688
         },
         icon: {
                 path: google.maps.SymbolPath.CIRCLE,
