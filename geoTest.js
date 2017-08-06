@@ -30,12 +30,12 @@ function initMap() {
 
     // start geolocating
     var userMarker = null;
-    geoLocate();
+    geoLocate(userMarker);
 
 } // end initMap function
 
 
-function geoLocate() {
+function geoLocate(userMarker) {
 
     // Try HTML5 geolocation.
     var options = {
