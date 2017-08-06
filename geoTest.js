@@ -29,6 +29,7 @@ function initMap() {
     });
 
     // start geolocating
+    var userMarker = null;
     geoLocate();
 
 } // end initMap function
@@ -39,31 +40,33 @@ function geoLocate() {
     // Try HTML5 geolocation.
     var options = {
         enableHighAccuracy: true,
-        timeout: 5000,
+        timeout: 8000,
         maximumAge: 0
     };
     if (navigator.geolocation) {
-        if (userMarker) {
-            userMarker.setMap(null);
-        }
         watchId = navigator.geolocation.watchPosition(function(position) {
             map.setCenter(
                 {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
                 });
-                var userMarker = new google.maps.Marker({
-                    position: map.getCenter(),
-                    icon: {
-                        path: google.maps.SymbolPath.CIRCLE,
-                        scale: 8,
-                        fillColor: "#AA00FF",
-                        fillOpacity: .75,
-                        strokeColor: "#AA00FF",
-                        strokeOpacity: 1.0,
-                    },
-                    map: map
-                });
+                if (userMarker === null) {
+                    userMarker = new google.maps.Marker({
+                        position: map.getCenter(),
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 8,
+                            fillColor: "#AA00FF",
+                            fillOpacity: .75,
+                            strokeColor: "#AA00FF",
+                            strokeOpacity: 1.0,
+                        },
+                        map: map
+                    });
+                }
+                else {
+                    userMarker.setPosition(map.getCenter());
+                }
         }, 
             // geolocation error function
             function(error){
