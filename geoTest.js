@@ -1,6 +1,7 @@
 //  SavTour google maps api key: AIzaSyBPECMronxQUSE7KgmcVqKL5fzDEVpk0u8
 $(document).ready(function(){
     var map;
+    alert(window.innerHeight, window.innerWidth);
     initMap();
 }) // end doc ready
 
@@ -147,7 +148,7 @@ function showInfo(stop,userPos,targetPos,directionsDisplay) {
 }
 function getDirections(userPos, targetPos, location, directionsDisplay) {
 
-    alert(window.innerHeight, window.innerWidth);
+
     var origin = new google.maps.LatLng(userPos.lat,userPos.lng);
     var target = new google.maps.LatLng(targetPos.lat,targetPos.lng);
 
