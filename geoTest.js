@@ -146,6 +146,8 @@ function showInfo(stop,userPos,targetPos,directionsDisplay) {
 //getDirections(userPos, targetPos, directionsDisplay);
 }
 function getDirections(userPos, targetPos, location, directionsDisplay) {
+
+    alert(window.innerHeight, window.innerWidth);
     var origin = new google.maps.LatLng(userPos.lat,userPos.lng);
     var target = new google.maps.LatLng(targetPos.lat,targetPos.lng);
 
