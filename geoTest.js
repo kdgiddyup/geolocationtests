@@ -1,7 +1,7 @@
 //  SavTour google maps api key: AIzaSyBPECMronxQUSE7KgmcVqKL5fzDEVpk0u8
 $(document).ready(function(){
     var map;
-    alert(window.innerHeight, window.innerWidth);
+    alert(window.innerHeight+", "+window.innerWidth);
     initMap();
 }) // end doc ready
 
