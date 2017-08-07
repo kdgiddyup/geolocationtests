@@ -136,7 +136,7 @@ function showInfo(stop,userPos,targetPos,directionsDisplay) {
         <div id="directionsButton" class="btn btn-success">Directions</div>`
     );
     $("#directionsButton").on("click",function(){
-        //$("#stopInfo").modal("hide");
+        $("#stopInfo").modal("hide");
         getDirections(userPos, targetPos, directionsDisplay);
     })
     $("#stopInfo").modal("show");
