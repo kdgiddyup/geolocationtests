@@ -126,6 +126,7 @@ function getDirections(userPos, targetPos) {
         };
     directionsService.route(dirRequest, function(result, status) {
         if (status == 'OK') {
+            console.log("Walking route result:",result);
             directionsDisplay.setMap(map);
             directionsDisplay.setDirections(result);
         }
