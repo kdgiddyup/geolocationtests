@@ -125,29 +125,31 @@ function handleLocationError(browserHasGeolocation, pos) {
 }
 
 function showInfo(stop,userPos,targetPos,directionsDisplay) {
-    $("#stopTitle").html(stop.data.name);
+    var location = stop.data.name;
+    $("#stopTitle").html(location);
     $("#stopInfoPanel").html(
         `<h4>${stop.data.address}</h4>
         <div class="stopImage">
             <img src="${stop.data.image}"/></div>
         <div class="stopDescription">
             <p>${stop.data.description}</p>
-        </div>
-        <div id="directionsButton" class="btn btn-success">Directions</div>`
+        </div>`
     );
+    
+
     $("#directionsButton").on("click",function(){
         $("#stopInfo").modal("hide");
-        getDirections(userPos, targetPos, directionsDisplay);
+        getDirections(userPos, targetPos, location, directionsDisplay);
     })
     $("#stopInfo").modal("show");
 
 //getDirections(userPos, targetPos, directionsDisplay);
 }
-function getDirections(userPos, targetPos, directionsDisplay) {
+function getDirections(userPos, targetPos, location, directionsDisplay) {
     var origin = new google.maps.LatLng(userPos.lat,userPos.lng);
     var target = new google.maps.LatLng(targetPos.lat,targetPos.lng);
+
     var directionsService = new google.maps.DirectionsService();
-    
     var dirRequest =
         {
             origin: origin,
@@ -160,6 +162,8 @@ function getDirections(userPos, targetPos, directionsDisplay) {
         if (status == 'OK') {
             directionsDisplay.setDirections(result);
             
+            // update modal window title
+            $("#walkingDirectionsTitle").html(`Getting to ${location}`)
             // trigger the modal window
             $("#walkingDirections").modal("show");
 

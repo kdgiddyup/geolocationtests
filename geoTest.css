@@ -23,8 +23,13 @@ body {
     margin: 0 auto;
 }
 
-#stopInfo,
-#walkingDirections {
-    height: 98%;
+#stopInfo .modal-content,
+#walkingDirections .modal-content {
+    max-height: 545px;
+}
+
+#stopInfoPanel,
+#directionsPanel {
     overflow: auto;
+    max-height: 430px;
 }
