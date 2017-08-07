@@ -8,7 +8,7 @@ $(document).ready(function(){
 function initMap() {
    // instantiate map
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16
+        zoom: 15
     });  
 
     // start geolocating
