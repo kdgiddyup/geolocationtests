@@ -15,8 +15,15 @@ function initMap() {
     var userMarker = null;
     var newLoad = true;
 
-    // this is the route rendering service for walking directions
-    var directionsDisplay = new google.maps.DirectionsRenderer();
+    // this is the route rendering service for walking directions; we set some options here and pass it through functions to   getDirections(); 
+    var directionsDisplay = new google.maps.DirectionsRenderer(
+        {
+            draggable: true,
+            panel: document.getElementById("directionsPanel"),
+            map: map,
+            suppressMarkers: true
+        }
+    );
 
     geoLocate(userMarker, newLoad, directionsDisplay);
 
@@ -132,12 +139,9 @@ function getDirections(userPos, targetPos, directionsDisplay) {
         };
     directionsService.route(dirRequest, function(result, status) {
         if (status == 'OK') {
-            console.log("Walking route result:",result);
-            directionsDisplay.setMap(map);
             directionsDisplay.setDirections(result);
-            // put step-by-step directions on modal window body
-            directionsDisplay.setPanel(document.getElementById("directionsPanel"));
-            // modal is #walkingDirections
+            
+            // trigger the modal window
             $("#walkingDirections").modal("show");
 
         }
