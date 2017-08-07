@@ -25,7 +25,7 @@ body {
 
 #stopInfo .modal-content,
 #walkingDirections .modal-content {
-    max-height: 545px;
+    max-height: 500px;
 }
 
 #stopInfoPanel,
