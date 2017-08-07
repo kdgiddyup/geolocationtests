@@ -29,4 +29,14 @@ tourStops = [
                 },
             pos: { lat: 32.067239, lng: -81.096339 }
         }
+        {
+            data:
+                {
+                    name: "Coligny Beach",
+                    description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa odio cum et voluptas recusandae eum rerum laudantium perferendis magni fuga, modi omnis, saepe quod, debitis. Ab porro doloremque veniam iure.",
+                    address: "At the Atlantic Ocean",
+                    image: "http://www.hiltonhead.com/wp-content/uploads/bce-600x350.jpg"
+                },
+            pos: { lat: 32.14174, lng: -80.7533067 }
+        }
     ]
