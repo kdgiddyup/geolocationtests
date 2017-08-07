@@ -77,7 +77,10 @@ function geoLocate(userMarker,newLoad) {
 }
 
 function addTourStops(){
-    var userPos = `${map.getCenter().lat()},${map.getCenter().lng()}`;
+    var userPos = {
+        lat: map.getCenter().lat(),
+        lng: map.getCenter().lng()
+        };
     // we use the tourStops array from tourData.js to populate the map with tour stops
     $(tourStops).each(function(index,stop){
         var thisMarker = new google.maps.Marker({
@@ -93,7 +96,11 @@ function addTourStops(){
             map: map
         });
         thisMarker.addListener('click', function() {
-            getDirections(userPos,`${stop.pos.lat},${stop.pos.lng}`);
+            var targetPos = { 
+                lat: stop.pos.lat, 
+                lng: stop.pos.lng 
+            };
+            getDirections(userPos, targetPos);
         });
     });
 }
@@ -105,22 +112,22 @@ function handleLocationError(browserHasGeolocation, pos) {
 }
 
 function getDirections(userPos, targetPos) {
-    //41.43206,-81.38992
-    var origin = new google.maps.LatLng(userPos);
-    var target = new google.maps.LatLng(targetPos);
-    var service = new google.maps.DistanceMatrixService();
-
-    service.getDistanceMatrix(
+    var origin = new google.maps.LatLng(userPos.lat,userPos.lng);
+    var target = new google.maps.LatLng(targetPos.lat,targetPos.lng);
+    var directionsService = new google.maps.DirectionsService();
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    var dirRequest =
         {
-            origins: [origin],
-            destinations: [target],
+            origin: origin,
+            destination: target,
             travelMode: "WALKING",
-            //unitSystem: "imperial",
-        },
-        callback
-    );
-    
-    function callback(response,status){
-        console.log(response);
-    }
+            unitSystem: google.maps.UnitSystem.IMPERIAL,
+            provideRouteAlternatives: true
+        };
+    directionsService.route(dirRequest, function(result, status) {
+        if (status == 'OK') {
+            directionsDisplay.setMap(map);
+            directionsDisplay.setDirections(result);
+        }
+    });
 }
