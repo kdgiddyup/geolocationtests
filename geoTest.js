@@ -14,12 +14,16 @@ function initMap() {
     // start geolocating
     var userMarker = null;
     var newLoad = true;
-    geoLocate(userMarker,newLoad);
+
+    // this is the route rendering service for walking directions
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+
+    geoLocate(userMarker, newLoad, directionsDisplay);
 
 } // end initMap function
 
 
-function geoLocate(userMarker,newLoad) {
+function geoLocate(userMarker,newLoad, directionsDisplay) {
 
     // Try HTML5 geolocation.
     var options = {
@@ -55,7 +59,9 @@ function geoLocate(userMarker,newLoad) {
                     // is this the first time this page was loaded? add tour markers and flip newLoad flag
                     if (newLoad) {
                         newLoad = false;
-                        addTourStops();
+
+                        // function to populate map with tour stops, passing along directionsDisplay map route service
+                        addTourStops(directionsDisplay);
                     }
             }, 
                 // geolocation error function
@@ -76,7 +82,7 @@ function geoLocate(userMarker,newLoad) {
     } 
 }
 
-function addTourStops(){
+function addTourStops(directionsDisplay){
     var userPos = {
         lat: map.getCenter().lat(),
         lng: map.getCenter().lng()
@@ -100,7 +106,7 @@ function addTourStops(){
                 lat: stop.pos.lat, 
                 lng: stop.pos.lng 
             };
-            getDirections(userPos, targetPos);
+            getDirections(userPos, targetPos, directionsDisplay);
         });
     });
 }
@@ -111,11 +117,11 @@ function handleLocationError(browserHasGeolocation, pos) {
         'Error: Your browser doesn\'t support geolocation.');
 }
 
-function getDirections(userPos, targetPos) {
+function getDirections(userPos, targetPos, directionsDisplay) {
     var origin = new google.maps.LatLng(userPos.lat,userPos.lng);
     var target = new google.maps.LatLng(targetPos.lat,targetPos.lng);
     var directionsService = new google.maps.DirectionsService();
-    var directionsDisplay = new google.maps.DirectionsRenderer();
+    
     var dirRequest =
         {
             origin: origin,
