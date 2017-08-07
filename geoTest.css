@@ -22,3 +22,9 @@ body {
 #directionsButton {
     margin: 0 auto;
 }
+
+#stopInfo,
+#walkingDirections {
+    height: 98%;
+    overflow: auto;
+}
