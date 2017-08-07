@@ -25,11 +25,11 @@ body {
 
 #stopInfo .modal-content,
 #walkingDirections .modal-content {
-    max-height: 500px;
+    max-height: 480px;
 }
 
 #stopInfoPanel,
 #directionsPanel {
     overflow: auto;
-    max-height: 430px;
+    max-height: 360px;
 }
