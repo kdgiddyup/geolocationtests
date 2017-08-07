@@ -14,23 +14,12 @@ function initMap() {
     // start geolocating
     var userMarker = null;
     var newLoad = true;
-
-    // this is the route rendering service for walking directions; we set some options here and pass it through functions to   getDirections(); 
-    var directionsDisplay = new google.maps.DirectionsRenderer(
-        {
-            draggable: true,
-            panel: document.getElementById("directionsPanel"),
-            map: map,
-            suppressMarkers: true
-        }
-    );
-
-    geoLocate(userMarker, newLoad, directionsDisplay);
+    geoLocate(userMarker, newLoad);
 
 } // end initMap function
 
 
-function geoLocate(userMarker,newLoad, directionsDisplay) {
+function geoLocate(userMarker,newLoad) {
 
     // Try HTML5 geolocation.
     var options = {
@@ -67,8 +56,8 @@ function geoLocate(userMarker,newLoad, directionsDisplay) {
                     if (newLoad) {
                         newLoad = false;
 
-                        // function to populate map with tour stops, passing along directionsDisplay map route service
-                        addTourStops(directionsDisplay);
+                        // function to populate map with tour stops, passing along directionsService and directionsDisplay route services
+                        addTourStops();
                     }
             }, 
                 // geolocation error function
@@ -89,7 +78,19 @@ function geoLocate(userMarker,newLoad, directionsDisplay) {
     } 
 }
 
-function addTourStops(directionsDisplay){
+function addTourStops(){
+    
+    // setup direction renderer for routes between user location and selected markers; 
+    // we don't want to repeatedly create this service as we only need one instance, so we do it here and pass the object through nested functions until getDirections(), where it's called for
+    var dr = new google.maps.DirectionsRenderer(
+        {
+            draggable: true,
+            panel: document.getElementById("directionsPanel"),
+            map: map,
+            suppressMarkers: true
+        }
+    );    
+    
     var userPos = {
         lat: map.getCenter().lat(),
         lng: map.getCenter().lng()
@@ -107,16 +108,45 @@ function addTourStops(directionsDisplay){
                     strokeOpacity: 1.0
                 },
             map: map
-        });
-        thisMarker.addListener('click', function() {
+            });
             var targetPos = { 
-                lat: stop.pos.lat, 
-                lng: stop.pos.lng 
-            };
-            showInfo(stop,userPos,targetPos,directionsDisplay)
-        });
-    });
-}
+                    lat: stop.pos.lat, 
+                    lng: stop.pos.lng 
+                };
+
+            // here we define what should happen when a marker is tapped
+            thisMarker.addListener('click', function() {
+                var location = stop.data.name;
+                $("#stopTitle").html(location);
+                $("#stopInfoPanel").html(
+                    `<h4>${stop.data.address}</h4>
+                    <div class="stopImage">
+                        <img src="${stop.data.image}"/></div>
+                    <div class="stopDescription">
+                        <p>${stop.data.description}</p>
+                    </div>`
+                );
+                // add directions button
+                $("#stopInfoFooter").prepend(`<button id="directionsButton" class="btn btn-success">Directions</button>`);
+
+                // add click event to this button
+                $("#directionsButton").on("click",function(){
+                    
+                    // hide modal
+                    $("#stopInfo").modal("hide");
+                    
+                    // hide button - we need to build it dynamically with each marker press
+                    $("#directionsButton").remove();
+                    
+                    // call directions function
+                    getDirections(userPos, targetPos, location, dr);
+                });
+                
+                // reveal the info modal for this stop
+                $("#stopInfo").modal("show");
+            });  // end click event function for markers
+        }); // end .each() loop for tour stops array
+}  // end addTourStops function
 
 function handleLocationError(browserHasGeolocation, pos) {
     console.log(browserHasGeolocation ?
@@ -124,34 +154,11 @@ function handleLocationError(browserHasGeolocation, pos) {
         'Error: Your browser doesn\'t support geolocation.');
 }
 
-function showInfo(stop,userPos,targetPos,directionsDisplay) {
-    var location = stop.data.name;
-    $("#stopTitle").html(location);
-    $("#stopInfoPanel").html(
-        `<h4>${stop.data.address}</h4>
-        <div class="stopImage">
-            <img src="${stop.data.image}"/></div>
-        <div class="stopDescription">
-            <p>${stop.data.description}</p>
-        </div>`
-    );
-    
 
-    $("#directionsButton").on("click",function(){
-        $("#stopInfo").modal("hide");
-        getDirections(userPos, targetPos, location, directionsDisplay);
-    })
-    $("#stopInfo").modal("show");
-
-//getDirections(userPos, targetPos, directionsDisplay);
-}
-function getDirections(userPos, targetPos, location, directionsDisplay) {
-
-
+function getDirections(userPos, targetPos, location, dr) {
     var origin = new google.maps.LatLng(userPos.lat,userPos.lng);
     var target = new google.maps.LatLng(targetPos.lat,targetPos.lng);
-
-    var directionsService = new google.maps.DirectionsService();
+    
     var dirRequest =
         {
             origin: origin,
@@ -160,15 +167,21 @@ function getDirections(userPos, targetPos, location, directionsDisplay) {
             unitSystem: google.maps.UnitSystem.IMPERIAL,
             provideRouteAlternatives: true
         };
-    directionsService.route(dirRequest, function(result, status) {
-        if (status == 'OK') {
-            directionsDisplay.setDirections(result);
-            
+
+        // set new directions service
+        var ds = new google.maps.DirectionsService();
+        
+        // request route info based on user pos and selected destination
+        ds.route(dirRequest, function(result, status) {
+        if (status === 'OK') {
+            console.log("route requested");
+            // dr = DirectionsRenderer service set up in addTourStops()
+            dr.setDirections(result);
+                
             // update modal window title
             $("#walkingDirectionsTitle").html(`Getting to ${location}`)
             // trigger the modal window
             $("#walkingDirections").modal("show");
-
         }
     });
 }
