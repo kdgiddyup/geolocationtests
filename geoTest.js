@@ -113,7 +113,7 @@ function addTourStops(directionsDisplay){
                 lat: stop.pos.lat, 
                 lng: stop.pos.lng 
             };
-            getDirections(userPos, targetPos, directionsDisplay);
+            showInfo(stop,userPos,targetPos,directionsDisplay)
         });
     });
 }
@@ -124,6 +124,25 @@ function handleLocationError(browserHasGeolocation, pos) {
         'Error: Your browser doesn\'t support geolocation.');
 }
 
+function showInfo(stop,userPos,targetPos,directionsDisplay) {
+    $("#stopTitle").html(stop.data.name);
+    $("#stopInfoPanel").html(
+        `<h4>${stop.data.address}</h4>
+        <div class="stopImage">
+            <img src="${stop.data.image}"/></div>
+        <div class="stopDescription">
+            <p>${stop.data.description}</p>
+        </div>
+        <div id="directionsButton" class="btn btn-success">Directions</div>`
+    );
+    $("#directionsButton").on("click",function(){
+        //$("#stopInfo").modal("hide");
+        getDirections(userPos, targetPos, directionsDisplay);
+    })
+    $("#stopInfo").modal("show");
+
+//getDirections(userPos, targetPos, directionsDisplay);
+}
 function getDirections(userPos, targetPos, directionsDisplay) {
     var origin = new google.maps.LatLng(userPos.lat,userPos.lng);
     var target = new google.maps.LatLng(targetPos.lat,targetPos.lng);
