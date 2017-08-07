@@ -135,6 +135,11 @@ function getDirections(userPos, targetPos, directionsDisplay) {
             console.log("Walking route result:",result);
             directionsDisplay.setMap(map);
             directionsDisplay.setDirections(result);
+            // put step-by-step directions on modal window body
+            directionsDisplay.setPanel(document.getElementById("directionsPanel"));
+            // modal is #walkingDirections
+            $("#walkingDirections").modal("show");
+
         }
     });
 }
