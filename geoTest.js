@@ -126,19 +126,12 @@ function addTourStops(){
                         <p>${stop.data.description}</p>
                     </div>`
                 );
-                // add directions button
-                $("#stopInfoFooter").prepend(`<button id="directionsButton" class="btn btn-success">Directions</button>`);
 
-                // add click event to this button
-                $("#directionsButton").on("click",function(){
-                    
-                    // hide button - we need to build it dynamically with each marker press
-                    $("#directionsButton").remove();
-                    
+                // remove any previous click events to "Directions" button, then add new one for this stop 
+                $("#directionsButton").off("click").on("click",function(){
+                
                     // hide modal
                     $("#stopInfo").modal("hide");
-                    
-
                     
                     // call directions function
                     getDirections(userPos, targetPos, location, dr);
@@ -157,7 +150,7 @@ function handleLocationError(browserHasGeolocation, pos) {
 }
 
 
-function getDirections(userPos, targetPos, location, dr) {
+function getDirections(userPos, targetPos, location, dr) {    
     var origin = new google.maps.LatLng(userPos.lat,userPos.lng);
     var target = new google.maps.LatLng(targetPos.lat,targetPos.lng);
     
