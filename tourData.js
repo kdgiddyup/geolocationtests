@@ -47,6 +47,6 @@ tourStops = [
                     address: "Berkeley Place",
                     image: "https://i.ytimg.com/vi/ebZxCABpXbc/maxresdefault.jpg"
                 },
-            pos: { lat: 32.14174, lng: -80.7533067 }
+            pos: { lat: 32.283747, lng: -80.912130 }
         }
     ]
