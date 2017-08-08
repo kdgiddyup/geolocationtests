@@ -24,7 +24,7 @@ function geoLocate(userMarker,newLoad) {
     // Try HTML5 geolocation.
     var options = {
         enableHighAccuracy: true,
-        timeout: 8000,
+        timeout: 5000,
         maximumAge: 0
     };
     if (navigator.geolocation) {
@@ -132,11 +132,13 @@ function addTourStops(){
                 // add click event to this button
                 $("#directionsButton").on("click",function(){
                     
+                    // hide button - we need to build it dynamically with each marker press
+                    $("#directionsButton").remove();
+                    
                     // hide modal
                     $("#stopInfo").modal("hide");
                     
-                    // hide button - we need to build it dynamically with each marker press
-                    $("#directionsButton").remove();
+
                     
                     // call directions function
                     getDirections(userPos, targetPos, location, dr);
