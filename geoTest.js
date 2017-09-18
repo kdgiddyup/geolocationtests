@@ -1,4 +1,7 @@
 //  SavTour google maps api key: AIzaSyBPECMronxQUSE7KgmcVqKL5fzDEVpk0u8
+
+var apiBase = "https://savtourapi.herokuapp.com/api/";
+
 $(document).ready(function(){
     var map;
     initMap();
@@ -72,13 +75,15 @@ function geoLocate(userMarker,newLoad) {
         // still add markers, but center map generically
         if (newLoad) {
             newLoad = false;
-            addTourStops();
+
+        // get tour stops from api
+        $.get(`${apiBase}\locations`,stopData,addTourStops(stopData.data))
         }
         handleLocationError(false, map.getCenter());
     } 
 }
 
-function addTourStops(){
+function addTourStops(tourStops){
     
     // setup direction renderer for routes between user location and selected markers; 
     // we don't want to repeatedly create this service as we only need one instance, so we do it here and pass the object through nested functions until getDirections(), where it's called for
@@ -95,8 +100,8 @@ function addTourStops(){
         lat: map.getCenter().lat(),
         lng: map.getCenter().lng()
         };
-    // we use the tourStops array from tourData.js to populate the map with tour stops
-    $(tourStops).each(function(index,stop){
+    
+        $(tourStops).each(function(index,stop){
         var thisMarker = new google.maps.Marker({
             position: stop.pos,
             icon: {
