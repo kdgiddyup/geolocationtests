@@ -84,7 +84,7 @@ function geoLocate(userMarker,newLoad) {
 }
 
 function addTourStops(tourStops){
-    
+    console.log(tourStops);
     // setup direction renderer for routes between user location and selected markers; 
     // we don't want to repeatedly create this service as we only need one instance, so we do it here and pass the object through nested functions until getDirections(), where it's called for
     var dr = new google.maps.DirectionsRenderer(
