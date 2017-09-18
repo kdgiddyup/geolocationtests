@@ -77,14 +77,12 @@ function geoLocate(userMarker,newLoad) {
         }
      
     // get tour stops from api
-    console.log("Getting stops ...");
     $.get(`${apiBase}\locations`,function( stopData ){
         addTourStops(stopData.data)
     }); 
 }
 
 function addTourStops(tourStops){
-    console.log(tourStops);
     // setup direction renderer for routes between user location and selected markers; 
     // we don't want to repeatedly create this service as we only need one instance, so we do it here and pass the object through nested functions until getDirections(), where it's called for
     var dr = new google.maps.DirectionsRenderer(
@@ -103,7 +101,8 @@ function addTourStops(tourStops){
     
         $(tourStops).each(function(index,stop){
             // lat/lng data must be of type number
-            stop.pos = { "lat": Number(stop.pos.lat), "lng": Number(stop.pos.lng) }
+            stop.pos = { "lat": Number(stop.pos.lat), "lng": Number(stop.pos.lng) };
+            console.log(stop.pos);
             var thisMarker = new google.maps.Marker({
             position: stop.pos,
             icon: {
