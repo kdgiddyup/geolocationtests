@@ -102,7 +102,7 @@ function addTourStops(tourStops){
         $(tourStops).each(function(index,stop){
             // lat/lng data must be of type number
             stop.pos = { "lat": Number(stop.pos.lat), "lng": Number(stop.pos.lng) };
-            console.log(stop.pos);
+            console.log(stop);
             var thisMarker = new google.maps.Marker({
             position: stop.pos,
             icon: {
