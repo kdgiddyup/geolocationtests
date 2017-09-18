@@ -102,7 +102,9 @@ function addTourStops(tourStops){
         };
     
         $(tourStops).each(function(index,stop){
-        var thisMarker = new google.maps.Marker({
+            // lat/lng data must be of type number
+            stop.pos = { "lat": Number(stop.pos.lat), "lng": Number(stop.pos.lng) }
+            var thisMarker = new google.maps.Marker({
             position: stop.pos,
             icon: {
                     path: google.maps.SymbolPath.CIRCLE,
@@ -115,8 +117,8 @@ function addTourStops(tourStops){
             map: map
             });
             var targetPos = { 
-                    lat: Number(stop.pos.lat), 
-                    lng: Number(stop.pos.lng) 
+                    lat: stop.pos.lat, 
+                    lng: stop.pos.lng 
                 };
 
             // here we define what should happen when a marker is tapped
