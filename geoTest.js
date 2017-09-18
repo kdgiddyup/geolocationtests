@@ -55,12 +55,9 @@ function geoLocate(userMarker,newLoad) {
                         userMarker.setPosition(map.getCenter());
                     };
 
-                    // is this the first time this page was loaded? add tour markers and flip newLoad flag
+                    // is this the first time this page was loaded? flip newLoad flag
                     if (newLoad) {
                         newLoad = false;
-
-                        // function to populate map with tour stops, passing along directionsService and directionsDisplay route services
-                        addTourStops();
                     }
             }, 
                 // geolocation error function
@@ -72,16 +69,17 @@ function geoLocate(userMarker,newLoad) {
     } 
     else {
         // browser doesn't support geolocation
-        // still add markers, but center map generically
+        // center map generically
         if (newLoad) {
             newLoad = false;
-
-        // get tour stops from api
-        $.get(`${apiBase}\locations`,stopData,function(){
-            addTourStops(stopData.data)
-        });
-        handleLocationError(false, map.getCenter());
-    } 
+            handleLocationError(false, map.getCenter());
+            }
+        }
+     
+    // get tour stops from api
+     $.get(`${apiBase}\locations`,stopData,function(){
+        addTourStops(stopData.data)
+    }); 
 }
 
 function addTourStops(tourStops){
