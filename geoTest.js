@@ -77,7 +77,7 @@ function geoLocate(userMarker,newLoad) {
         }
      
     // get tour stops from api
-     $.get(`${apiBase}\locations`,stopData,function(){
+     $.get(`${apiBase}\locations`,function( stopData ){
         addTourStops(stopData.data)
     }); 
 }
