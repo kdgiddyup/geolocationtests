@@ -122,14 +122,14 @@ function addTourStops(tourStops){
 
             // here we define what should happen when a marker is tapped
             thisMarker.addListener('click', function() {
-                var location = stop.data.name;
+                var location = stop.name;
                 $("#stopTitle").html(location);
                 $("#stopInfoPanel").html(
-                    `<h4>${stop.data.address}</h4>
+                    `<h4>${stop.address}</h4>
                     <div class="stopImage">
-                        <img src="${stop.data.image}"/></div>
+                        <img src="${stop.image}"/></div>
                     <div class="stopDescription">
-                        <p>${stop.data.description}</p>
+                        <p>${stop.description}</p>
                     </div>`
                 );
 
