@@ -114,8 +114,8 @@ function addTourStops(tourStops){
             map: map
             });
             var targetPos = { 
-                    lat: stop.pos.lat, 
-                    lng: stop.pos.lng 
+                    lat: Number(stop.pos.lat), 
+                    lng: Number(stop.pos.lng) 
                 };
 
             // here we define what should happen when a marker is tapped
